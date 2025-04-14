@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TCR-ESM Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #4a9eff;
+      --secondary-color: #2e2e2e;
+      --background-color: #121212;
+      --text-color: #ffffff;
+      --hover-color: #6bb1ff;
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .main-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      background: linear-gradient(45deg, var(--primary-color), var(--hover-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+    }
+
+    .nav-tabs {
+      border-bottom: 2px solid var(--secondary-color);
+      margin-bottom: 2rem;
+    }
+
+    .nav-tabs .nav-link {
+      color: var(--text-color);
+      background-color: var(--secondary-color);
+      border: none;
+      border-radius: 0;
+      padding: 1rem 2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: var(--primary-color);
+      color: var(--text-color);
+      border: none;
+    }
+
+    .tab-content {
+      background-color: var(--secondary-color);
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-check-label, .form-label {
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .btn-custom {
+      background-color: var(--primary-color);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background-color: var(--hover-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-outline-light {
+      border: 2px solid var(--text-color);
+      color: var(--text-color);
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background-color: var(--text-color);
+      color: var(--background-color);
+      transform: translateY(-2px);
+    }
+
+    .contact-info {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-info a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .contact-info a:hover {
+      color: var(--hover-color);
+      text-decoration: underline;
+    }
+
+    .institute-logo {
+      max-width: 200px;
+      margin-bottom: 2rem;
+      filter: brightness(0) invert(1);
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .feature-list li:before {
+      content: "✓";
+      color: var(--primary-color);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-color);
+      padding: 0.75rem 1rem;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(74, 158, 255, 0.25);
+    }
+
+    .form-check-input:checked {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .download-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background-color: var(--hover-color);
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .contact-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-item label {
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    .contact-item p {
+      margin: 0.5rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="main-title">TCR-ESM Predictor</h1>
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab">
+          <i class="fas fa-home me-2"></i>Home
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="prediction-tab" data-bs-toggle="tab" data-bs-target="#prediction" type="button" role="tab">
+          <i class="fas fa-upload me-2"></i>File Prediction
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
+          <i class="fas fa-envelope me-2"></i>Contact Us
+        </button>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="myTabContent">
+      <!-- Home Tab -->
+      <div class="tab-pane fade show active" id="home" role="tabpanel">
+        <h3 class="section-title">Welcome to TCR-ESM Predictor</h3>
+        <p>This tool allows you to predict TCR-peptide-MHC interactions using our advanced ESM-based model.</p>
+        <p class="mb-3">Key features:</p>
+        <ul class="feature-list">
+          <li>Support for multiple prediction tasks</li>
+          <li>Compatible with MCPAS and VDJDB databases</li>
+          <li>Easy-to-use interface</li>
+          <li>Sample data available for testing</li>
+        </ul>
+      </div>
+
+      <!-- Prediction Tab -->
+      <div class="tab-pane fade" id="prediction" role="tabpanel">
+        <div class="instructions mb-4">
+          <h3 class="section-title">Instructions</h3>
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">File Requirements</h4>
+            <p>Please upload the following .npy files containing embeddings for your prediction task:</p>
+            <ul class="mb-0">
+              <li><strong>TCRα Embedding:</strong> Contains the embedding representation of the TCR alpha chain sequence. This is used to analyze the binding characteristics of the alpha chain.</li>
+              <li><strong>TCRβ Embedding:</strong> Contains the embedding representation of the TCR beta chain sequence. This is used to analyze the binding characteristics of the beta chain.</li>
+              <li><strong>Peptide Embedding:</strong> Contains the embedding representation of the target peptide sequence. This represents the antigen that the TCR is predicted to bind to.</li>
+              <li><strong>MHC Embedding:</strong> Contains the embedding representation of the Major Histocompatibility Complex molecule. This represents the molecule that presents the peptide to the TCR.</li>
+            </ul>
+          </div>
+          <div class="alert alert-warning mt-3" role="alert">
+            <h4 class="alert-heading">Important Notes</h4>
+            <ul class="mb-0">
+              <li>All files must be in .npy format (NumPy array format)</li>
+              <li>Files should contain embeddings generated using the ESM model</li>
+              <li>Select the appropriate task type based on the components you want to analyze</li>
+              <li>Choose the database (MCPAS or VDJDB) that matches your training data</li>
+              <li>Sample input files are available for download below</li>
+            </ul>
+          </div>
+        </div>
+
+        <form action="../cgi-bin/predict.py" method="post" enctype="multipart/form-data">
+          <!-- Dataset Selection -->
+          <h3 class="section-title">Dataset Selection</h3>
+          <label class="form-label">Please select the Training Database</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="source" id="mcpas" value="mcpas">
+            <label class="form-check-label" for="mcpas">MCPAS</label>
+          </div>
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="radio" name="source" id="vdjdb" value="vdjdb">
+            <label class="form-check-label" for="vdjdb">VDJDB</label>
+          </div>
+
+          <!-- Prediction Task -->
+          <h3 class="section-title">Prediction Task</h3>
+          <label class="form-label">Please select the Prediction Task</label>
+          <div class="form-check">
+            <input class="form-check-input task-radio" type="radio" name="task" value="alphabetaptidemhc" id="task1">
+            <label class="form-check-label" for="task1">TCRα-TCRβ-Peptide-MHC</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input task-radio" type="radio" name="task" value="alphabeta" id="task2">
+            <label class="form-check-label" for="task2">TCRα-TCRβ-Peptide</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input task-radio" type="radio" name="task" value="alphaptidemhc" id="task3">
+            <label class="form-check-label" for="task3">TCRα-Peptide-MHC</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input task-radio" type="radio" name="task" value="betaptidemhc" id="task4">
+            <label class="form-check-label" for="task4">TCRβ-Peptide-MHC</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input task-radio" type="radio" name="task" value="alphaptide" id="task5">
+            <label class="form-check-label" for="task5">TCRα-Peptide</label>
+          </div>
+          <div class="form-check mb-4">
+            <input class="form-check-input task-radio" type="radio" name="task" value="betaptide" id="task6">
+            <label class="form-check-label" for="task6">TCRβ-Peptide</label>
+          </div>
+
+          <!-- Sample Button -->
+          <a href="sample_input_data.zip" class="download-btn" download>
+            <i class="fas fa-download me-2"></i>Download Sample Input Data
+          </a>
+
+          <!-- File Inputs (dynamic) -->
+          <div id="fileInputs">
+            <!-- Default task is 4-input: alphabetaptidemhc -->
+            <div class="mb-3">
+              <label class="form-label">Upload TCRα Embedding (.npy)</label>
+              <input class="form-control" type="file" name="tcra" accept=".npy" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Upload TCRβ Embedding (.npy)</label>
+              <input class="form-control" type="file" name="tcrb" accept=".npy" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Upload Peptide Embedding (.npy)</label>
+              <input class="form-control" type="file" name="pep" accept=".npy" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Upload MHC Embedding (.npy)</label>
+              <input class="form-control" type="file" name="mhc" accept=".npy" required>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <button type="submit" class="btn btn-custom me-2">
+              <i class="fas fa-paper-plane me-2"></i>Submit
+            </button>
+            <button type="reset" class="btn btn-outline-light">
+              <i class="fas fa-undo me-2"></i>Clear All
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Contact Tab -->
+      <div class="tab-pane fade" id="contact" role="tabpanel">
+        <div class="contact-info">
+          <img src="https://www.iiitd.ac.in/sites/default/files/images/logo.png" alt="IIITD Logo" class="institute-logo">
+          <h3 class="section-title">Contact Information</h3>
+          <div class="contact-item">
+            <label class="form-label">Institute</label>
+            <p>Indraprastha Institute of Information Technology Delhi (IIITD)</p>
+          </div>
+          <div class="contact-item">
+            <label class="form-label">Address</label>
+            <p>Okhla Industrial Estate, Phase III<br>
+            New Delhi - 110020<br>
+            India</p>
+          </div>
+          <div class="contact-item">
+            <label class="form-label">Website</label>
+            <p><a href="https://www.iiitd.ac.in" target="_blank">www.iiitd.ac.in</a></p>
+          </div>
+          <div class="contact-item">
+            <label class="form-label">Phone</label>
+            <p>+91-11-26907400-7404</p>
+          </div>
+          <div class="contact-item">
+            <label class="form-label">Contributor</label>
+            <p>Deployed by: <a href="mailto:sanyam22448@iiitd.ac.in">sanyam22448@iiitd.ac.in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const fileInputs = {
+      "alphabetaptidemhc": ["tcra", "tcrb", "pep", "mhc"],
+      "alphabeta": ["tcra", "tcrb", "pep"],
+      "alphaptidemhc": ["tcra", "pep", "mhc"],
+      "betaptidemhc": ["tcrb", "pep", "mhc"],
+      "alphaptide": ["tcra", "pep"],
+      "betaptide": ["tcrb", "pep"]
+    };
+
+    const fieldNames = {
+      "tcra": "TCRα Embedding (.npy)",
+      "tcrb": "TCRβ Embedding (.npy)",
+      "pep": "Peptide Embedding (.npy)",
+      "mhc": "MHC Embedding (.npy)"
+    };
+
+    const fileInputsContainer = document.getElementById("fileInputs");
+    const predictionForm = document.querySelector('#prediction form');
+
+    function resetForm() {
+      // Clear all radio button selections
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.checked = false;
+      });
+      
+      // Clear file inputs
+      document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.value = '';
+      });
+      
+      // Clear the file inputs container
+      fileInputsContainer.innerHTML = '';
+    }
+
+    function updateFileInputs(task) {
+      if (!task) return;
+      
+      fileInputsContainer.innerHTML = "";
+      fileInputs[task].forEach(name => {
+        const div = document.createElement("div");
+        div.className = "mb-3";
+        div.innerHTML = `
+          <label class="form-label">Upload ${fieldNames[name]}</label>
+          <input class="form-control" type="file" name="${name}" accept=".npy" required>
+        `;
+        fileInputsContainer.appendChild(div);
+      });
+    }
+
+    // Handle task radio button changes
+    document.querySelectorAll('.task-radio').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        updateFileInputs(e.target.value);
+      });
+    });
+
+    // Handle tab changes
+    document.querySelector('#prediction-tab').addEventListener('click', () => {
+      resetForm();
+    });
+
+    // Handle form reset button
+    document.querySelector('button[type="reset"]').addEventListener('click', () => {
+      resetForm();
+    });
+  </script>
+</body>
+</html>
