@@ -46,7 +46,7 @@ tcr-esm/
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/tcr-esm.git
+   git clone https://github.com/SanyamGarg12/tcr-esm.git
    ```
 
 2. Copy the files to your XAMPP installation:
