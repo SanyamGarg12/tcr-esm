@@ -3,42 +3,167 @@
 <head>
   <meta charset="UTF-8" />
   <title>TCR-ESM Prediction</title>
+  <link rel="icon" type="image/png" href="images/iiitd_logo.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #4a9eff;
-      --secondary-color: #2e2e2e;
-      --background-color: #121212;
-      --text-color: #ffffff;
-      --hover-color: #6bb1ff;
+      --black-color: #000000;
+      --blue-color: #0000FF;
+      --primary-color: #FFC107;
+      --secondary-color: #f5f5f5;
+      --background-color: #ffffff;
+      --text-color: #333333;
+      --hover-color: #FFA000;
+      --border-color: #e0e0e0;
+      --header-strip-color: #FFC107;
+      --gradient-start: #FFC107;
+      --gradient-end: #FF9800;
     }
 
     body {
       background-color: var(--background-color);
       color: var(--text-color);
-      padding: 2rem;
+      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 95%;
       margin: 0 auto;
+      padding: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      gap: 2rem;
+      padding: 3rem;
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 200px;
+    }
+
+    .logo-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(255,255,255,0.15), rgba(255,255,255,0.1));
+      z-index: 1;
+    }
+
+    .logo-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .logo {
+      height: clamp(60px, 6vw, 80px);
+      width: auto;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-text {
+      position: relative;
+      z-index: 2;
+      text-align: left;
     }
 
     .main-title {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
       font-weight: 700;
-      margin-bottom: 2rem;
-      background: linear-gradient(45deg, var(--primary-color), var(--hover-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin: 0;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      line-height: 1.2;
       text-align: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1.5rem;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+    }
+
+    .institute-name {
+      font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+      color: white;
+      margin-top: 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      text-align: left;
+      line-height: 1.2;
+    }
+
+    .header-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 2;
+      margin-left: auto;
+      min-width: 150px;
+    }
+
+    .header-nav .nav-link {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.8rem 1.2rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .header-nav .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(5px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-nav .nav-link.active {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .header-nav .nav-link i {
+      margin-right: 0.8rem;
+      font-size: 1.1rem;
     }
 
     .nav-tabs {
-      border-bottom: 2px solid var(--secondary-color);
+      border-bottom: 2px solid var(--border-color);
       margin-bottom: 2rem;
     }
 
@@ -66,9 +191,11 @@
     .tab-content {
       background-color: var(--secondary-color);
       border-radius: 10px;
-      padding: 2rem;
+      padding: clamp(1.5rem, 2vw, 2rem);
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       animation: fadeIn 0.5s ease;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     @keyframes fadeIn {
@@ -79,16 +206,18 @@
     .form-check-label, .form-label {
       margin-bottom: 0.5rem;
       font-weight: 500;
+      font-size: clamp(0.9rem, 1.1vw, 1.1rem);
     }
 
     .btn-custom {
       background-color: var(--primary-color);
       border: none;
-      color: white;
-      padding: 0.75rem 1.5rem;
+      color: var(--text-color);
+      padding: clamp(0.5rem, 0.8vw, 0.75rem) clamp(1rem, 1.5vw, 1.5rem);
       border-radius: 5px;
       font-weight: 500;
       transition: all 0.3s ease;
+      font-size: clamp(0.9rem, 1.1vw, 1.1rem);
     }
 
     .btn-custom:hover {
@@ -134,51 +263,105 @@
     .institute-logo {
       max-width: 200px;
       margin-bottom: 2rem;
-      filter: brightness(0) invert(1);
+      transition: transform 0.3s ease;
+    }
+
+    .institute-logo:hover {
+      transform: scale(1.05);
     }
 
     .feature-list {
       list-style: none;
       padding: 0;
+      width: 100%;
     }
 
     .feature-list li {
       margin-bottom: 1rem;
       padding-left: 2rem;
       position: relative;
+      width: 100%;
+      text-align: justify;
     }
 
     .feature-list li:before {
       content: "✓";
-      color: var(--primary-color);
+      color: var(--black-color);
       position: absolute;
       left: 0;
       font-weight: bold;
     }
 
     .form-control {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: white;
+      border: 1px solid var(--border-color);
       color: var(--text-color);
-      padding: 0.75rem 1rem;
+      padding: clamp(0.5rem, 0.8vw, 0.75rem) clamp(0.75rem, 1.2vw, 1rem);
       border-radius: 5px;
       transition: all 0.3s ease;
+      font-size: clamp(0.9rem, 1.1vw, 1.1rem);
     }
 
     .form-control:focus {
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: white;
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 0.2rem rgba(74, 158, 255, 0.25);
+      box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    }
+
+    .form-check-input {
+      width: 1.4em;
+      height: 1.4em;
+      margin-top: 0.2em;
+      background-color: #ffffff;
+      border: 3px solid #2c3e50;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
     }
 
     .form-check-input:checked {
       background-color: var(--primary-color);
       border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.3);
+    }
+
+    .form-check-input:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0.6em;
+      height: 0.6em;
+      background-color: #ffffff;
+      border-radius: 50%;
+    }
+
+    .form-check-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.3rem rgba(255, 193, 7, 0.3);
+    }
+
+    .form-check-input:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.2);
+    }
+
+    .form-check-label {
+      margin-left: 0.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+      cursor: pointer;
+      font-size: 1.1em;
+    }
+
+    .form-check {
+      margin-bottom: 0.8rem;
     }
 
     .download-btn {
       background-color: var(--primary-color);
-      color: white;
+      color: var(--text-color);
       padding: 0.75rem 1.5rem;
       border-radius: 5px;
       text-decoration: none;
@@ -190,14 +373,15 @@
     .download-btn:hover {
       background-color: var(--hover-color);
       transform: translateY(-2px);
-      color: white;
+      color: var(--text-color);
     }
 
     .section-title {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 1.5vw, 1.5rem);
       font-weight: 600;
       margin-bottom: 1.5rem;
-      color: var(--primary-color);
+      color: #333333;
+      width: 100%;
     }
 
     .contact-item {
@@ -212,61 +396,297 @@
     .contact-item p {
       margin: 0.5rem 0 0;
     }
+
+    .office-hours p {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .members-section {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-top: 2rem;
+      width: 100%;
+    }
+
+    .members-section h3 {
+      color: #333333;
+      margin-bottom: 1rem;
+    }
+
+    .member-item {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .member-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .member-name {
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .member-email {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .member-email:hover {
+      color: var(--hover-color);
+      text-decoration: underline;
+    }
+
+    .contact-section {
+      background-color: var(--secondary-color);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-content {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .contact-content h3 {
+      color: #333333;
+      margin: 2rem 0 1rem;
+      font-size: 1.5rem;
+    }
+
+    .member-list {
+      margin-bottom: 2rem;
+    }
+
+    .member-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .member-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .member-item strong {
+      color: #333333;
+      font-size: 1.1rem;
+    }
+
+    .member-item a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .member-item a:hover {
+      color: var(--hover-color);
+      text-decoration: underline;
+    }
+
+    .address {
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .developer-info {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .developer-info a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .developer-info a:hover {
+      color: var(--hover-color);
+      text-decoration: underline;
+    }
+
+    .modal-header {
+      background-color: var(--primary-color) !important;
+      color: var(--text-color) !important;
+    }
+
+    .workflow-container {
+      width: 100%;
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .workflow-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: clamp(1rem, 2vw, 2rem) 0;
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 95%;
+      }
+    }
+
+    @media (min-width: 1400px) {
+      .container {
+        max-width: 95%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .logo-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .header-nav {
+        width: 100%;
+        margin-top: 1.5rem;
+      }
+
+      .main-title {
+        position: relative;
+        left: auto;
+        transform: none;
+        margin: 1rem 0;
+      }
+
+      .logo-text {
+        text-align: center;
+      }
+
+      .institute-name {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .logo-container {
+        padding: 1rem;
+      }
+
+      .header-nav {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .header-nav .nav-link {
+        width: 100%;
+        text-align: left;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1 class="main-title">TCR-ESM Predictor</h1>
-
-    <!-- Navigation Tabs -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab">
-          <i class="fas fa-home me-2"></i>Home
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="prediction-tab" data-bs-toggle="tab" data-bs-target="#prediction" type="button" role="tab">
-          <i class="fas fa-upload me-2"></i>File Prediction
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
-          <i class="fas fa-envelope me-2"></i>Contact Us
-        </button>
-      </li>
-    </ul>
+    <div class="logo-container">
+      <div class="logo-section">
+        <img src="images/iiitd_logo.png" alt="IIITD Logo" class="logo">
+        <div class="logo-text">
+          <p class="institute-name">Indraprastha Institute of </p>
+          <p class="institute-name">Information Technology, Delhi </p>
+        </div>
+      </div>
+      <h1 class="main-title">TCR-ESM Prediction</h1>
+      <ul class="nav header-nav" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab">
+            <i class="fas fa-home"></i>Home
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="prediction-tab" data-bs-toggle="tab" data-bs-target="#prediction" type="button" role="tab">
+            <i class="fas fa-upload"></i>File Prediction
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab">
+            <i class="fas fa-envelope"></i>Contact Us
+          </button>
+        </li>
+      </ul>
+    </div>
 
     <!-- Tab Content -->
     <div class="tab-content" id="myTabContent">
       <!-- Home Tab -->
       <div class="tab-pane fade show active" id="home" role="tabpanel">
-        <h3 class="section-title">Welcome to TCR-ESM Predictor</h3>
-        <p>This tool allows you to predict TCR-peptide-MHC interactions using our advanced ESM-based model.</p>
-        <p class="mb-3">Key features:</p>
+        <h2 class="section-title">Home | TCR-ESM</h2>
+        
+        <h3 class="section-title">Introduction</h3>
+        <p>TCR-ESM is an advanced web server designed to predict T-cell receptor (TCR) interactions with peptide-bound major histocompatibility complexes (pMHC). By leveraging peptide embeddings from the Evolutionary Scale Modeling (ESM) protein language model, TCR-ESM offers accurate predictions of TCR-pMHC binding, addressing a significant challenge in T-cell therapy development.</p>
+        <h3 class="section-title">Pipeline Overview</h3>
+        <div class="workflow-container" style="margin: 2rem 0; text-align: center;">
+          <img src="images/workflow.png" alt="TCR-ESM Workflow" class="workflow-image" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+          <p style="margin-top: 1rem; color: #666; font-style: italic;">Figure: TCR-ESM prediction workflow</p>
+        </div>
+        <ol class="feature-list">
+          <li>Input Submission: Users input TCR CDR3 sequences (α, β, or both), peptide sequences, and optionally MHC information.</li>
+          <li>Embedding Generation: Sequences are transformed into 1280-dimensional embeddings using the ESM1v model.</li>
+          <li>Prediction: Embeddings are processed through a neural network to predict binding interactions.</li>
+          <li>Output: Results are presented with confidence scores and visualizations to aid interpretation.</li>
+        </ol>
+        <h3 class="section-title">Importance</h3>
+        <p>Identifying cognate targets for TCRs is crucial for the advancement of T-cell therapies. Traditional methods face limitations due to the complexity of TCR-pMHC interactions. TCR-ESM overcomes these barriers by utilizing deep learning techniques to model the intricate relationships between TCRs, peptides, and MHC molecules, thereby enhancing our understanding of TCR specificity and aiding in the design of effective immunotherapies.</p>
+
+        <h3 class="section-title">Features</h3>
         <ul class="feature-list">
-          <li>Support for multiple prediction tasks</li>
-          <li>Compatible with MCPAS and VDJDB databases</li>
-          <li>Easy-to-use interface</li>
-          <li>Sample data available for testing</li>
+          <li>Deep Learning Integration: Employs embeddings from the ESM protein language model to capture nuanced features of peptides, TCRs, and MHC molecules.</li>
+          <li>Comprehensive Input Handling: Supports predictions using CDR3α, CDR3β, or paired CDR3αβ sequences, with or without MHC information.</li>
+          <li>User-Friendly Interface: Provides an intuitive web interface for inputting sequences and viewing prediction results.</li>
+          <li>Performance Benchmarking: Demonstrates superior performance over existing predictors like netTCR2.0 and ERGO II on external datasets.</li>
+        </ul>
+
+        <h3 class="section-title">Use Cases</h3>
+        <ul class="feature-list">
+          <li>Predicting TCR specificity for novel peptides.</li>
+          <li>Designing T-cell therapies with enhanced target recognition.</li>
+          <li>Studying the role of MHC in TCR-peptide interactions.</li>
+          <li>Benchmarking new datasets against established prediction models.</li>
+        </ul>
+
+        <h3 class="section-title">Dataset and Model</h3>
+        <p>TCR-ESM was trained on curated datasets, including McPAS, VDJDB, and pMTnet, encompassing a diverse range of TCR-peptide-MHC interactions. The model architecture integrates embeddings from the ESM1v model, processed through a feedforward neural network optimized for binary classification tasks. Performance metrics such as Matthews correlation coefficient (MCC), precision-recall, ROC AUC, and F1 score validate the model's robustness and generalizability.</p>
+
+        <h3 class="section-title">Availability</h3>
+        <ul class="feature-list">
+          <li>
+            <a href="https://github.com/SanyamGarg12/tcr-esm" target="_blank" class="github-link" style="color: var(--blue-color); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+              <i class="fab fa-github"></i>
+              <span>GitHub Repository</span>
+            </a>
+          </li>
+          <!-- <li>Source Code: Available upon request or through the associated publication.</li>
+          <li>License: Academic use permitted; contact authors for commercial licensing.</li> -->
         </ul>
       </div>
 
       <!-- Prediction Tab -->
       <div class="tab-pane fade" id="prediction" role="tabpanel">
         <div class="instructions mb-4">
-          <h3 class="section-title">Instructions</h3>
-          <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading">File Requirements</h4>
-            <p>Please upload the following .npy files containing embeddings for your prediction task:</p>
-            <ul class="mb-0">
-              <li><strong>TCRα Embedding:</strong> Contains the embedding representation of the TCR alpha chain sequence. This is used to analyze the binding characteristics of the alpha chain.</li>
-              <li><strong>TCRβ Embedding:</strong> Contains the embedding representation of the TCR beta chain sequence. This is used to analyze the binding characteristics of the beta chain.</li>
-              <li><strong>Peptide Embedding:</strong> Contains the embedding representation of the target peptide sequence. This represents the antigen that the TCR is predicted to bind to.</li>
-              <li><strong>MHC Embedding:</strong> Contains the embedding representation of the Major Histocompatibility Complex molecule. This represents the molecule that presents the peptide to the TCR.</li>
-            </ul>
-          </div>
-          <div class="alert alert-warning mt-3" role="alert">
+          <!-- <h3 class="section-title">Instructions</h3> -->
+          <div class="alert alert-warning" role="alert">
             <h4 class="alert-heading">Important Notes</h4>
             <ul class="mb-0">
               <li>All files must be in .npy format (NumPy array format)</li>
@@ -282,42 +702,56 @@
           <!-- Dataset Selection -->
           <h3 class="section-title">Dataset Selection</h3>
           <label class="form-label">Please select the Training Database</label>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="source" id="mcpas" value="mcpas">
-            <label class="form-check-label" for="mcpas">MCPAS</label>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="source" id="mcpas" value="mcpas">
+                <label class="form-check-label" for="mcpas">MCPAS</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="source" id="vdjdb" value="vdjdb">
+                <label class="form-check-label" for="vdjdb">VDJDB</label>
+              </div>
+            </div>
           </div>
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="radio" name="source" id="vdjdb" value="vdjdb">
-            <label class="form-check-label" for="vdjdb">VDJDB</label>
-          </div>
+          <div class="mb-4"></div>
 
           <!-- Prediction Task -->
           <h3 class="section-title">Prediction Task</h3>
           <label class="form-label">Please select the Prediction Task</label>
-          <div class="form-check">
-            <input class="form-check-input task-radio" type="radio" name="task" value="alphabetaptidemhc" id="task1">
-            <label class="form-check-label" for="task1">TCRα-TCRβ-Peptide-MHC</label>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input task-radio" type="radio" name="task" value="alphabetaptidemhc" id="task1">
+                <label class="form-check-label" for="task1">TCRα-TCRβ-Peptide-MHC</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input task-radio" type="radio" name="task" value="alphabeta" id="task2">
+                <label class="form-check-label" for="task2">TCRα-TCRβ-Peptide</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input task-radio" type="radio" name="task" value="alphaptidemhc" id="task3">
+                <label class="form-check-label" for="task3">TCRα-Peptide-MHC</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check">
+                <input class="form-check-input task-radio" type="radio" name="task" value="betaptidemhc" id="task4">
+                <label class="form-check-label" for="task4">TCRβ-Peptide-MHC</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input task-radio" type="radio" name="task" value="alphaptide" id="task5">
+                <label class="form-check-label" for="task5">TCRα-Peptide</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input task-radio" type="radio" name="task" value="betaptide" id="task6">
+                <label class="form-check-label" for="task6">TCRβ-Peptide</label>
+              </div>
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input task-radio" type="radio" name="task" value="alphabeta" id="task2">
-            <label class="form-check-label" for="task2">TCRα-TCRβ-Peptide</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input task-radio" type="radio" name="task" value="alphaptidemhc" id="task3">
-            <label class="form-check-label" for="task3">TCRα-Peptide-MHC</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input task-radio" type="radio" name="task" value="betaptidemhc" id="task4">
-            <label class="form-check-label" for="task4">TCRβ-Peptide-MHC</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input task-radio" type="radio" name="task" value="alphaptide" id="task5">
-            <label class="form-check-label" for="task5">TCRα-Peptide</label>
-          </div>
-          <div class="form-check mb-4">
-            <input class="form-check-input task-radio" type="radio" name="task" value="betaptide" id="task6">
-            <label class="form-check-label" for="task6">TCRβ-Peptide</label>
-          </div>
+          <div class="mb-4"></div>
 
           <!-- Sample Button -->
           <a href="sample_input_data.zip" class="download-btn" download>
@@ -358,30 +792,55 @@
 
       <!-- Contact Tab -->
       <div class="tab-pane fade" id="contact" role="tabpanel">
-        <div class="contact-info">
-          <img src="https://www.iiitd.ac.in/sites/default/files/images/logo.png" alt="IIITD Logo" class="institute-logo">
-          <h3 class="section-title">Contact Information</h3>
-          <div class="contact-item">
-            <label class="form-label">Institute</label>
-            <p>Indraprastha Institute of Information Technology Delhi (IIITD)</p>
-          </div>
-          <div class="contact-item">
-            <label class="form-label">Address</label>
-            <p>Okhla Industrial Estate, Phase III<br>
-            New Delhi - 110020<br>
-            India</p>
-          </div>
-          <div class="contact-item">
-            <label class="form-label">Website</label>
-            <p><a href="https://www.iiitd.ac.in" target="_blank">www.iiitd.ac.in</a></p>
-          </div>
-          <div class="contact-item">
-            <label class="form-label">Phone</label>
-            <p>+91-11-26907400-7404</p>
-          </div>
-          <div class="contact-item">
-            <label class="form-label">Contributor</label>
-            <p>Deployed by: <a href="mailto:sanyam22448@iiitd.ac.in">sanyam22448@iiitd.ac.in</a></p>
+        <div class="contact-section">
+          <h2 class="section-title">Contact Information</h2>
+          
+          <div class="contact-content">
+            <div class="row">
+              <div class="col-md-6">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.0000000000005!2d77.2708717!3d28.5455143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce3e564daac1d%3A0x2c582e340e7bc556!2sIndraprastha%20Institute%20of%20Information%20Technology%20Delhi!5e0!3m2!1sen!2sin!4v1640000000000!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="300" 
+                        style="border:0; border-radius: 10px;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                </iframe>
+                <div class="mt-3">
+                  <h3 style="color:white;">Address</h3>
+                  <p style="font-size:15px">
+                    Department of Computational Biology<br>
+                    Indraprastha Institute of Information Technology, Delhi<br>
+                    Okhla Industrial Estate, Phase III<br>
+                    Delhi, New Delhi<br>
+                    India 110020
+                  </p>
+                  <a style="font-size:15px" href="https://www.google.com/maps/place/Indraprastha+Institute+of+Information+Technology+Delhi/@28.5455143,77.2708717,17z/data=!3m1!4b1!4m5!3m4!1s0x390ce3e564daac1d:0x2c582e340e7bc556!8m2!3d28.5455143!4d77.2730604" target="_blank">
+                    <i class="fas fa-map-marker-alt me-2"></i>Show Map
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <h3>Members</h3>
+                <div class="member-list">
+                  <div class="member-item">
+                    <strong>Jaspreet Kaur Dhanjel</strong><br>
+                    <strong>Email:</strong> <a href="mailto:jaspreet@iiitd.ac.in">jaspreet@iiitd.ac.in</a>
+                  </div>
+                  <div class="member-item">
+                    <strong>Shashank Yadav</strong><br>
+                    <strong>Email:</strong> <a href="mailto:shashankyadav321@gmail.com">shashankyadav321@gmail.com</a>
+                  </div>
+                  <div class="member-item">
+                    <strong>Dhvani S. Vora</strong><br>
+                    <strong>Email:</strong> <a href="mailto:dhvani.s.vora@gmail.com">dhvani.s.vora@gmail.com</a>
+                  </div>
+                  <div class="member-item">
+                    <strong>Sanyam Garg (Website Developer)</strong><br>
+                    <strong>Email:</strong> <a href="mailto:sanyam22448@iiitd.ac.in">sanyam22448@iiitd.ac.in</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -389,6 +848,25 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #dc3545; color: white;">
+          <h5 class="modal-title" id="errorModalLabel">
+            <i class="fas fa-exclamation-triangle me-2"></i>Form Validation Error
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="error-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const fileInputs = {
       "alphabetaptidemhc": ["tcra", "tcrb", "pep", "mhc"],
@@ -404,6 +882,13 @@
       "tcrb": "TCRβ Embedding (.npy)",
       "pep": "Peptide Embedding (.npy)",
       "mhc": "MHC Embedding (.npy)"
+    };
+
+    const fileRequirements = {
+      "tcra": "TCRα CDR3 sequence embedding (1280-dimensional vector) generated using ESM model. This represents the alpha chain of the T-cell receptor that recognizes the peptide-MHC complex.",
+      "tcrb": "TCRβ CDR3 sequence embedding (1280-dimensional vector) generated using ESM model. This represents the beta chain of the T-cell receptor that recognizes the peptide-MHC complex.",
+      "pep": "Peptide sequence embedding (1280-dimensional vector) generated using ESM model. This represents the antigenic peptide that is presented by the MHC molecule and recognized by the TCR.",
+      "mhc": "MHC sequence embedding (1280-dimensional vector) generated using ESM model. This represents the Major Histocompatibility Complex molecule that presents the peptide to the T-cell receptor."
     };
 
     const fileInputsContainer = document.getElementById("fileInputs");
@@ -422,6 +907,82 @@
       
       // Clear the file inputs container
       fileInputsContainer.innerHTML = '';
+      
+      // Clear any error messages
+      const errorDiv = document.querySelector('.error-message');
+      if (errorDiv) {
+        errorDiv.remove();
+      }
+    }
+
+    function validateForm() {
+      let isValid = true;
+      const errors = [];
+
+      // Check if database is selected
+      const selectedDatabase = document.querySelector('input[name="source"]:checked');
+      if (!selectedDatabase) {
+        errors.push("Please select a training database (MCPAS or VDJDB)");
+        isValid = false;
+      }
+
+      // Check if task is selected
+      const selectedTask = document.querySelector('input[name="task"]:checked');
+      if (!selectedTask) {
+        errors.push("Please select a prediction task");
+        isValid = false;
+      }
+
+      // Check if all required files are uploaded
+      const requiredFiles = fileInputs[selectedTask?.value || 'alphabetaptidemhc'];
+      requiredFiles.forEach(fileType => {
+        const fileInput = document.querySelector(`input[name="${fileType}"]`);
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+          errors.push(`Please upload ${fieldNames[fileType]}`);
+          isValid = false;
+        } else {
+          // Check file extension
+          const fileName = fileInput.files[0].name;
+          if (!fileName.endsWith('.npy')) {
+            errors.push(`${fieldNames[fileType]} must be a .npy file`);
+            isValid = false;
+          }
+        }
+      });
+
+      // Show errors if any
+      if (!isValid) {
+        showErrors(errors);
+      }
+
+      return isValid;
+    }
+
+    function showErrors(errors) {
+      // Get the modal elements
+      const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+      const errorList = document.querySelector('.error-list');
+      
+      // Clear previous errors
+      errorList.innerHTML = '';
+      
+      // Create error list
+      const ul = document.createElement('ul');
+      ul.style.marginBottom = '0';
+      ul.style.paddingLeft = '1.5rem';
+      
+      errors.forEach(error => {
+        const li = document.createElement('li');
+        li.style.marginBottom = '0.5rem';
+        li.style.color = '#dc3545';
+        li.innerHTML = `<i class="fas fa-times-circle me-2"></i>${error}`;
+        ul.appendChild(li);
+      });
+      
+      errorList.appendChild(ul);
+      
+      // Show the modal
+      errorModal.show();
     }
 
     function updateFileInputs(task) {
@@ -430,14 +991,28 @@
       fileInputsContainer.innerHTML = "";
       fileInputs[task].forEach(name => {
         const div = document.createElement("div");
-        div.className = "mb-3";
+        div.className = "mb-4";
         div.innerHTML = `
-          <label class="form-label">Upload ${fieldNames[name]}</label>
+          <div class="file-requirements mb-2" style="background-color: #f8f9fa; padding: 1rem; border-radius: 5px; border-left: 4px solid var(--primary-color); margin-bottom: 1rem;">
+            <h5 style="color: var(--black-color); margin-bottom: 0.5rem;">${fieldNames[name]}</h5>
+            <p style="margin-bottom: 0.5rem;">${fileRequirements[name]}</p>
+            <p style="color: #666; font-size: 0.9rem; margin-bottom: 0;"><i class="fas fa-info-circle me-1"></i>File must be in .npy format and contain a 1280-dimensional vector</p>
+          </div>
           <input class="form-control" type="file" name="${name}" accept=".npy" required>
         `;
         fileInputsContainer.appendChild(div);
       });
     }
+
+    // Handle form submission
+    predictionForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (validateForm()) {
+        // If validation passes, submit the form
+        this.submit();
+      }
+    });
 
     // Handle task radio button changes
     document.querySelectorAll('.task-radio').forEach(radio => {
@@ -447,8 +1022,11 @@
     });
 
     // Handle tab changes
-    document.querySelector('#prediction-tab').addEventListener('click', () => {
-      resetForm();
+    document.querySelectorAll('#myTab .nav-link').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        // Reset the form when switching tabs
+        resetForm();
+      });
     });
 
     // Handle form reset button
